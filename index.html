@@ -6,12 +6,13 @@
     <title>Astro</title>
     <link rel="icon" href="image.png" type="image/png">
     <style>
-        /* Cosmic font face - OTF version */
+        /* Cosmic font face with better fallback handling */
         @font-face {
             font-family: 'AstroFont';
             src: url('font.otf') format('opentype');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
         }
 
         /* Cosmic dark mode */
@@ -46,17 +47,19 @@
             display: none;
         }
         
-        /* Compact cosmic header */
+        /* Fixed header sizing */
         .header {
             width: 100%;
             height: 25vh;
             max-height: 200px;
             min-height: 150px;
             background-image: url('header.png');
-            background-size: cover;
+            background-size: contain;
             background-position: center;
+            background-repeat: no-repeat;
             position: relative;
             margin: 0 auto;
+            background-color: var(--space-dark);
         }
         
         .header::after {
@@ -69,7 +72,7 @@
             background: linear-gradient(transparent, var(--space-dark));
         }
         
-        /* Ultra cool navbar */
+        /* Navbar with audio controls */
         .navbar {
             position: sticky;
             top: 0;
@@ -78,6 +81,9 @@
             -webkit-backdrop-filter: blur(10px);
             background-color: rgba(10, 10, 26, 0.7);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .nav-list {
@@ -124,6 +130,27 @@
             width: calc(100% - 40px);
         }
         
+        /* Audio controls */
+        .audio-controls {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .audio-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-btn:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
         /* Mobile menu */
         .menu-toggle {
             display: none;
@@ -131,9 +158,11 @@
             padding: 15px 20px;
             color: white;
             font-size: 1.3rem;
+            background: none;
+            border: none;
         }
         
-        /* Main content - cosmic nothingness */
+        /* Main content */
         .content {
             display: flex;
             justify-content: center;
@@ -151,17 +180,17 @@
                 0 0 20px rgba(5, 217, 232, 0.5);
         }
         
-        /* Glowing footer */
+        /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.8rem;
             letter-spacing: 1px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Enhanced floating particles */
+        /* Improved particles */
         .particles {
             position: fixed;
             top: 0;
@@ -176,8 +205,17 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.6);
             animation: float 15s infinite linear;
+            filter: blur(0.5px);
+        }
+        
+        .particle:nth-child(3n) {
+            background-color: rgba(77, 26, 127, 0.6);
+        }
+        
+        .particle:nth-child(5n) {
+            background-color: rgba(5, 217, 232, 0.4);
         }
         
         @keyframes float {
@@ -186,13 +224,13 @@
                 opacity: 0;
             }
             10% {
-                opacity: 1;
+                opacity: 0.8;
             }
             90% {
-                opacity: 1;
+                opacity: 0.8;
             }
             100% {
-                transform: translate(var(--move-x), var(--move-y)) scale(0.5);
+                transform: translate(var(--move-x), var(--move-y)) scale(0.3);
                 opacity: 0;
             }
         }
@@ -203,6 +241,7 @@
                 display: none;
                 flex-direction: column;
                 width: 100%;
+                background-color: rgba(10, 10, 26, 0.9);
             }
             
             .nav-list.active {
@@ -216,6 +255,7 @@
             .header {
                 height: 20vh;
                 min-height: 120px;
+                background-size: contain;
             }
             
             .content {
@@ -228,39 +268,55 @@
             .nav-link {
                 padding: 12px 20px;
             }
+            
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .audio-controls {
+                width: 100%;
+                justify-content: flex-end;
+                padding: 10px 20px;
+                background-color: rgba(10, 10, 26, 0.5);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Compact Cosmic Header -->
-    <div class="header"></div>
+    <!-- Header with proper sizing -->
+    <div class="header" role="img" aria-label="Cosmic header image"></div>
     
-    <!-- Ultra Cool Navbar -->
+    <!-- Navbar with audio controls -->
     <nav class="navbar">
-        <div class="menu-toggle">☰</div>
+        <button class="menu-toggle">☰</button>
         <ul class="nav-list">
             <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
             <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
             <li class="nav-item"><a href="discord.html" class="nav-link">Discord</a></li>
         </ul>
+        <div class="audio-controls">
+            <button class="audio-btn" id="audioToggle">🔊</button>
+        </div>
     </nav>
     
-    <!-- Cosmic Nothingness -->
+    <!-- Content -->
     <div class="content">
         nothing yet
     </div>
     
-    <!-- Glowing Footer -->
+    <!-- Footer -->
     <div class="footer">
         <p>Astro &copy; <span id="year"></span> | Enter the Void</p>
     </div>
     
-    <!-- Background music -->
-    <audio id="bgMusic" loop autoplay>
+    <!-- Background music with better autoplay handling -->
+    <audio id="bgMusic" loop>
         <source src="song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
     
-    <!-- Enhanced floating particles -->
+    <!-- Improved floating particles -->
     <div class="particles" id="particles"></div>
     
     <script>
@@ -272,49 +328,89 @@
         // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
         
-        // Background music with user interaction
+        // Audio handling with localStorage persistence
         const audio = document.getElementById('bgMusic');
-        audio.volume = 0.3;
+        const audioToggle = document.getElementById('audioToggle');
         
-        document.addEventListener('click', function initAudio() {
-            audio.play().catch(e => console.log("Audio requires interaction"));
-            document.removeEventListener('click', initAudio);
-        }, { once: true });
+        // Check for saved volume preference
+        const savedVolume = localStorage.getItem('audioVolume');
+        const savedMuted = localStorage.getItem('audioMuted');
         
-        // Create enhanced floating particles
+        // Set initial volume (default to 30% if no preference saved)
+        audio.volume = savedVolume !== null ? parseFloat(savedVolume) : 0.3;
+        
+        // Set initial mute state
+        if (savedMuted === 'true') {
+            audio.muted = true;
+            audioToggle.textContent = '🔇';
+        } else {
+            audio.muted = false;
+            audioToggle.textContent = '🔊';
+        }
+        
+        // Attempt to play audio (will work after user interaction)
+        function attemptPlay() {
+            audio.play().catch(e => {
+                console.log("Audio playback requires user interaction");
+            });
+        }
+        
+        // Try to play on page load (may not work in all browsers)
+        window.addEventListener('load', attemptPlay);
+        
+        // Toggle mute/unmute
+        audioToggle.addEventListener('click', () => {
+            audio.muted = !audio.muted;
+            localStorage.setItem('audioMuted', audio.muted);
+            audioToggle.textContent = audio.muted ? '🔇' : '🔊';
+            
+            // If unmuting, try to play
+            if (!audio.muted) {
+                attemptPlay();
+            }
+        });
+        
+        // Create improved floating particles
         const particlesContainer = document.getElementById('particles');
-        const particleCount = 60;
+        const particleCount = Math.min(50, window.innerWidth / 10); // Adjust count based on screen size
         
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             
-            const size = Math.random() * 3 + 1;
+            // More natural size distribution
+            const size = Math.random() * 2 + 0.5;
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
-            particle.style.opacity = Math.random() * 0.7 + 0.1;
+            
+            // Smoother opacity
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
+            
+            // Better initial positioning
             particle.style.left = `${Math.random() * 100}%`;
             particle.style.top = `${Math.random() * 100}%`;
             
-            const moveX = (Math.random() - 0.5) * 400;
-            const moveY = (Math.random() - 0.5) * 400;
+            // More natural movement
+            const moveX = (Math.random() - 0.5) * 200;
+            const moveY = (Math.random() - 0.5) * 200;
             particle.style.setProperty('--move-x', `${moveX}px`);
             particle.style.setProperty('--move-y', `${moveY}px`);
             
-            const duration = Math.random() * 15 + 10;
+            // Varied animation durations
+            const duration = Math.random() * 20 + 10;
             particle.style.animationDuration = `${duration}s`;
-            particle.style.animationDelay = `${Math.random() * 20}s`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
             
             particlesContainer.appendChild(particle);
         }
 
-        // Font load check
-        setTimeout(() => {
+        // Font load check with better fallback
+        document.fonts.ready.then(() => {
             if (!document.fonts.check('1rem AstroFont')) {
-                console.warn('Custom font not loaded, using fallback');
+                console.log('Using fallback font');
                 document.body.style.fontFamily = "'Arial', sans-serif";
             }
-        }, 500);
+        });
     </script>
 </body>
 </html>
