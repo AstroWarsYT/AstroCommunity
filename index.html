@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astro</title>
+    <link rel="icon" href="image.png" type="image/png">
+    <style>
+        /* Cosmic dark mode */
+        :root {
+            --space-dark: #0a0a1a;
+            --space-purple: #4d1a7f;
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--space-dark);
+            color: white;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--space-purple) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, var(--neon-blue) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+        
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Cosmic header */
+        .header {
+            width: 100%;
+            height: 40vh;
+            max-height: 300px;
+            background-image: url('header.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, var(--space-dark));
+        }
+        
+        /* Ultra cool navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(10, 10, 26, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 18px 25px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 25px;
+            width: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: calc(100% - 50px);
+        }
+        
+        /* Mobile menu */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 18px 25px;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        /* Main content - cosmic nothingness */
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 40vh;
+            padding: 40px;
+            text-align: center;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+        
+        /* Glowing footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Floating particles effect */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .nav-list {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .nav-list.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .header {
+                height: 30vh;
+            }
+            
+            .content {
+                font-size: 1.5rem;
+                min-height: 30vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Header -->
+    <div class="header"></div>
+    
+    <!-- Ultra Cool Navbar -->
+    <nav class="navbar">
+        <div class="menu-toggle">☰</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="discord.html" class="nav-link">Discord</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Cosmic Nothingness -->
+    <div class="content">
+        nothing yet
+    </div>
+    
+    <!-- Glowing Footer -->
+    <div class="footer">
+        <p>Astro &copy; <span id="year"></span> | Enter the Void</p>
+    </div>
+    
+    <!-- Background music -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+    
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-list').classList.toggle('active');
+        });
+        
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // Background music with user interaction
+        const audio = document.getElementById('bgMusic');
+        audio.volume = 0.3;
+        
+        document.addEventListener('click', function initAudio() {
+            audio.play().catch(e => console.log("Audio requires interaction"));
+            document.removeEventListener('click', initAudio);
+        }, { once: true });
+        
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = `${Math.random() * 3 + 1}px`;
+            particle.style.height = particle.style.width;
+            particle.style.backgroundColor = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.1})`;
+            particle.style.borderRadius = '50%';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            // Animation
+            const duration = Math.random() * 20 + 10;
+            particle.style.animation = `float ${duration}s linear infinite`;
+            particle.style.animationDelay = `${Math.random() * 20}s`;
+            
+            // Keyframes
+            const keyframes = `
+                @keyframes float {
+                    0% {
+                        transform: translate(0, 0);
+                        opacity: 1;
+                    }
+                    50% {
+                        transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px);
+                        opacity: 0.5;
+                    }
+                    100% {
+                        transform: translate(0, 0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            
+            const style = document.createElement('style');
+            style.innerHTML = keyframes;
+            document.head.appendChild(style);
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
