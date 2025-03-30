@@ -6,6 +6,14 @@
     <title>Astro</title>
     <link rel="icon" href="image.png" type="image/png">
     <style>
+        /* Cosmic font face - OTF version */
+        @font-face {
+            font-family: 'AstroFont';
+            src: url('font.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         /* Cosmic dark mode */
         :root {
             --space-dark: #0a0a1a;
@@ -21,7 +29,7 @@
         }
         
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'AstroFont', 'Arial', sans-serif;
             background-color: var(--space-dark);
             color: white;
             overflow-x: hidden;
@@ -31,21 +39,24 @@
                 radial-gradient(circle at 10% 20%, var(--space-purple) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, var(--neon-blue) 0%, transparent 20%);
             min-height: 100vh;
+            text-shadow: 0 0 5px rgba(5, 217, 232, 0.3);
         }
         
         body::-webkit-scrollbar {
             display: none;
         }
         
-        /* Cosmic header */
+        /* Compact cosmic header */
         .header {
             width: 100%;
-            height: 40vh;
-            max-height: 300px;
+            height: 25vh;
+            max-height: 200px;
+            min-height: 150px;
             background-image: url('header.png');
             background-size: cover;
             background-position: center;
             position: relative;
+            margin: 0 auto;
         }
         
         .header::after {
@@ -54,7 +65,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 50px;
+            height: 40px;
             background: linear-gradient(transparent, var(--space-dark));
         }
         
@@ -74,6 +85,7 @@
             list-style: none;
             justify-content: center;
             flex-wrap: wrap;
+            padding: 0 10px;
         }
         
         .nav-item {
@@ -84,11 +96,12 @@
             display: block;
             color: white;
             text-decoration: none;
-            padding: 18px 25px;
+            padding: 15px 20px;
             font-weight: 500;
             letter-spacing: 1px;
             transition: all 0.3s ease;
             position: relative;
+            font-size: 0.9rem;
         }
         
         .nav-link:hover {
@@ -99,8 +112,8 @@
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 10px;
-            left: 25px;
+            bottom: 8px;
+            left: 20px;
             width: 0;
             height: 2px;
             background: var(--neon-blue);
@@ -108,16 +121,16 @@
         }
         
         .nav-link:hover::after {
-            width: calc(100% - 50px);
+            width: calc(100% - 40px);
         }
         
         /* Mobile menu */
         .menu-toggle {
             display: none;
             cursor: pointer;
-            padding: 18px 25px;
+            padding: 15px 20px;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
         
         /* Main content - cosmic nothingness */
@@ -125,27 +138,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 40vh;
-            padding: 40px;
+            min-height: 30vh;
+            padding: 30px 20px;
             text-align: center;
-            font-size: 2rem;
-            color: rgba(255, 255, 255, 0.3);
+            font-size: 2.5rem;
+            color: var(--neon-blue);
             text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 300;
+            letter-spacing: 5px;
+            font-weight: normal;
+            text-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px rgba(5, 217, 232, 0.5);
         }
         
         /* Glowing footer */
         .footer {
             text-align: center;
-            padding: 30px;
+            padding: 20px;
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.8rem;
             letter-spacing: 1px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Floating particles effect */
+        /* Enhanced floating particles */
         .particles {
             position: fixed;
             top: 0;
@@ -154,6 +170,31 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--move-x), var(--move-y)) scale(0.5);
+                opacity: 0;
+            }
         }
         
         /* Responsive adjustments */
@@ -173,18 +214,25 @@
             }
             
             .header {
-                height: 30vh;
+                height: 20vh;
+                min-height: 120px;
             }
             
             .content {
-                font-size: 1.5rem;
-                min-height: 30vh;
+                font-size: 1.8rem;
+                min-height: 25vh;
+                padding: 20px 15px;
+                letter-spacing: 3px;
+            }
+            
+            .nav-link {
+                padding: 12px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Cosmic Header -->
+    <!-- Compact Cosmic Header -->
     <div class="header"></div>
     
     <!-- Ultra Cool Navbar -->
@@ -212,7 +260,7 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
     
-    <!-- Floating particles -->
+    <!-- Enhanced floating particles -->
     <div class="particles" id="particles"></div>
     
     <script>
@@ -233,49 +281,40 @@
             document.removeEventListener('click', initAudio);
         }, { once: true });
         
-        // Create floating particles
+        // Create enhanced floating particles
         const particlesContainer = document.getElementById('particles');
-        const particleCount = 50;
+        const particleCount = 60;
         
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.width = `${Math.random() * 3 + 1}px`;
-            particle.style.height = particle.style.width;
-            particle.style.backgroundColor = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.1})`;
-            particle.style.borderRadius = '50%';
+            particle.classList.add('particle');
+            
+            const size = Math.random() * 3 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.opacity = Math.random() * 0.7 + 0.1;
             particle.style.left = `${Math.random() * 100}%`;
             particle.style.top = `${Math.random() * 100}%`;
             
-            // Animation
-            const duration = Math.random() * 20 + 10;
-            particle.style.animation = `float ${duration}s linear infinite`;
+            const moveX = (Math.random() - 0.5) * 400;
+            const moveY = (Math.random() - 0.5) * 400;
+            particle.style.setProperty('--move-x', `${moveX}px`);
+            particle.style.setProperty('--move-y', `${moveY}px`);
+            
+            const duration = Math.random() * 15 + 10;
+            particle.style.animationDuration = `${duration}s`;
             particle.style.animationDelay = `${Math.random() * 20}s`;
-            
-            // Keyframes
-            const keyframes = `
-                @keyframes float {
-                    0% {
-                        transform: translate(0, 0);
-                        opacity: 1;
-                    }
-                    50% {
-                        transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px);
-                        opacity: 0.5;
-                    }
-                    100% {
-                        transform: translate(0, 0);
-                        opacity: 1;
-                    }
-                }
-            `;
-            
-            const style = document.createElement('style');
-            style.innerHTML = keyframes;
-            document.head.appendChild(style);
             
             particlesContainer.appendChild(particle);
         }
+
+        // Font load check
+        setTimeout(() => {
+            if (!document.fonts.check('1rem AstroFont')) {
+                console.warn('Custom font not loaded, using fallback');
+                document.body.style.fontFamily = "'Arial', sans-serif";
+            }
+        }, 500);
     </script>
 </body>
 </html>
